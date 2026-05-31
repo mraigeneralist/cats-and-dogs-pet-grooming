@@ -70,6 +70,8 @@
       background: var(--coral); color: #fff !important;
       padding: 10px 22px; border-radius: 50px;
       transition: transform 0.2s, box-shadow 0.2s !important;
+      border: none; cursor: pointer; font-family: inherit;
+      font-size: inherit; font-weight: inherit;
     }
     .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,71,0.35) !important; }
     .nav-hamburger {
@@ -475,12 +477,22 @@
     .btn-white {
       display: inline-flex; align-items: center; gap: 10px;
       background: #fff; color: var(--coral);
-      font-weight: 800; font-size: 1rem;
+      font-weight: 800; font-size: 1rem; font-family: inherit;
       padding: 16px 36px; border-radius: 50px;
-      text-decoration: none;
+      text-decoration: none; border: none; cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+    .btn-outline-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: #fff;
+      font-weight: 800; font-size: 1rem; font-family: inherit;
+      padding: 16px 32px; border-radius: 50px;
+      text-decoration: none; cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.6);
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .btn-outline-white:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); border-color: #fff; }
     .btn-whatsapp {
       display: inline-flex; align-items: center; gap: 10px;
       background: #25D366; color: #fff;
@@ -607,9 +619,148 @@
       .hero-actions { flex-direction: column; align-items: flex-start; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
       .cta-buttons { flex-direction: column; align-items: center; }
-      .btn-white, .btn-whatsapp { width: 100%; max-width: 320px; justify-content: center; }
+      .btn-white, .btn-whatsapp, .btn-outline-white { width: 100%; max-width: 320px; justify-content: center; }
       .footer-top { flex-direction: column; text-align: center; }
       .footer-links { justify-content: center; }
+    }
+
+    /* ── BOOKING MODAL ───────────────────────────── */
+    .booking-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(44,44,44,0.55);
+      backdrop-filter: blur(4px);
+      display: none; align-items: flex-start; justify-content: center;
+      padding: 40px 16px; overflow-y: auto;
+    }
+    .booking-overlay.open { display: flex; }
+    .booking-modal {
+      background: var(--cream); width: 100%; max-width: 520px;
+      border-radius: 28px; position: relative;
+      box-shadow: 0 30px 80px rgba(44,44,44,0.3);
+      animation: bk-pop 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden; margin: auto;
+    }
+    @keyframes bk-pop {
+      from { opacity: 0; transform: translateY(24px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .bk-header {
+      background: linear-gradient(135deg, var(--coral), #ff8867);
+      color: #fff; padding: 26px 28px 22px;
+    }
+    .bk-header h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
+    .bk-header p { font-size: 0.85rem; opacity: 0.92; }
+    .bk-close {
+      position: absolute; top: 18px; right: 18px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); color: #fff;
+      border: none; cursor: pointer; font-size: 1.2rem; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .bk-close:hover { background: rgba(255,255,255,0.4); }
+    /* progress steps */
+    .bk-steps {
+      display: flex; gap: 8px; margin-top: 18px;
+    }
+    .bk-steps .dot {
+      flex: 1; height: 5px; border-radius: 50px;
+      background: rgba(255,255,255,0.3); transition: background 0.3s;
+    }
+    .bk-steps .dot.active { background: #fff; }
+    .bk-body { padding: 26px 28px 30px; }
+    .bk-step { display: none; }
+    .bk-step.active { display: block; animation: bk-fade 0.3s ease; }
+    @keyframes bk-fade { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+    .bk-label {
+      display: block; font-weight: 700; font-size: 0.85rem;
+      color: var(--dark); margin: 0 0 8px;
+    }
+    .bk-field { margin-bottom: 18px; }
+    .bk-input, .bk-textarea {
+      width: 100%; padding: 13px 16px; font-size: 0.95rem;
+      font-family: inherit; color: var(--dark);
+      background: #fff; border: 1.5px solid rgba(255,107,71,0.18);
+      border-radius: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .bk-input:focus, .bk-textarea:focus {
+      border-color: var(--coral); box-shadow: 0 0 0 3px rgba(255,107,71,0.12);
+    }
+    .bk-textarea { resize: vertical; min-height: 70px; }
+    /* selectable card grid (services / pet type / slots) */
+    .bk-options { display: grid; gap: 10px; }
+    .bk-options.cols-2 { grid-template-columns: 1fr 1fr; }
+    .bk-options.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .bk-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 14px; background: #fff; cursor: pointer;
+      border: 1.5px solid rgba(255,107,71,0.18); border-radius: 14px;
+      font-size: 0.9rem; font-weight: 600; color: var(--dark);
+      transition: all 0.18s; text-align: left;
+    }
+    .bk-option .ic { font-size: 1.25rem; }
+    .bk-option:hover { border-color: var(--coral); transform: translateY(-2px); }
+    .bk-option.selected {
+      border-color: var(--coral); background: var(--light-coral);
+      box-shadow: 0 6px 18px rgba(255,107,71,0.18);
+    }
+    .bk-option.center { justify-content: center; text-align: center; }
+    /* time slots */
+    .bk-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .bk-slot {
+      padding: 11px 6px; text-align: center; font-size: 0.85rem; font-weight: 700;
+      background: #fff; border: 1.5px solid rgba(255,107,71,0.18);
+      border-radius: 12px; cursor: pointer; color: var(--dark);
+      transition: all 0.16s;
+    }
+    .bk-slot:hover:not(.taken) { border-color: var(--coral); transform: translateY(-2px); }
+    .bk-slot.selected { background: var(--coral); color: #fff; border-color: var(--coral); }
+    .bk-slot.taken {
+      opacity: 0.4; cursor: not-allowed; text-decoration: line-through;
+      background: #f0e9e1;
+    }
+    .bk-slots-empty { font-size: 0.85rem; color: var(--mid); padding: 8px 0; }
+    /* nav buttons */
+    .bk-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .bk-btn {
+      flex: 1; padding: 14px; border-radius: 50px; font-weight: 800;
+      font-size: 0.92rem; font-family: inherit; cursor: pointer; border: none;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .bk-btn-primary { background: var(--coral); color: #fff; }
+    .bk-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(255,107,71,0.35); }
+    .bk-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+    .bk-btn-ghost { background: #fff; color: var(--mid); border: 1.5px solid rgba(0,0,0,0.08); flex: 0 0 auto; padding: 14px 22px; }
+    .bk-btn-ghost:hover { color: var(--dark); }
+    .bk-err { color: var(--coral); font-size: 0.82rem; font-weight: 600; margin-top: 4px; min-height: 1em; }
+    .bk-hint { font-size: 0.8rem; color: var(--mid); margin-bottom: 14px; }
+    /* summary on confirm step */
+    .bk-summary {
+      background: #fff; border-radius: 16px; padding: 18px 20px;
+      border: 1.5px dashed rgba(255,107,71,0.3); margin-bottom: 18px;
+    }
+    .bk-summary-row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 0.9rem; }
+    .bk-summary-row .k { color: var(--mid); }
+    .bk-summary-row .v { color: var(--dark); font-weight: 700; text-align: right; }
+    /* success */
+    .bk-success { text-align: center; padding: 14px 4px 6px; }
+    .bk-success .check {
+      width: 72px; height: 72px; margin: 0 auto 18px;
+      border-radius: 50%; background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; animation: bk-pop 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .bk-success h3 { font-size: 1.45rem; font-weight: 900; margin-bottom: 8px; color: var(--dark); }
+    .bk-success p { color: var(--mid); font-size: 0.92rem; line-height: 1.6; margin-bottom: 18px; }
+    .bk-ref {
+      display: inline-block; background: var(--light-yellow); color: var(--dark);
+      font-weight: 800; letter-spacing: 0.05em; padding: 8px 18px;
+      border-radius: 50px; font-size: 0.95rem; margin-bottom: 22px;
+    }
+    @media (max-width: 480px) {
+      .booking-overlay { padding: 16px 10px; }
+      .bk-options.cols-3 { grid-template-columns: 1fr; }
+      .bk-slots { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -626,7 +777,7 @@
       <li><a href="#about">Our Story</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="tel:+911234567890" class="nav-cta" aria-label="Call us">📞 Call Us</a></li>
+      <li><button type="button" class="nav-cta" aria-label="Book an appointment" onclick="Booking.open()">🐾 Book Now</button></li>
     </ul>
     <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
       <span></span><span></span><span></span>
@@ -637,7 +788,8 @@
     <a href="#about" onclick="closeMenu()">Our Story</a>
     <a href="#gallery" onclick="closeMenu()">Gallery</a>
     <a href="#contact" onclick="closeMenu()">Contact</a>
-    <a href="tel:+911234567890" style="color: var(--coral);">📞 +91 12345 67890</a>
+    <a href="#" onclick="closeMenu(); Booking.open(); return false;" style="color: var(--coral); font-weight: 800;">🐾 Book Now</a>
+    <a href="tel:+911234567890">📞 +91 12345 67890</a>
   </nav>
 
   <!-- HERO -->
@@ -657,9 +809,9 @@
         <h1>Where Every Pet Gets <em>The Royal Treatment.</em></h1>
         <p class="hero-sub">Professional dog & cat grooming, training, and care — delivered with love and 20+ years of experience. Your furry family deserves the best.</p>
         <div class="hero-actions">
-          <a href="tel:+911234567890" class="btn-primary" aria-label="Call to book appointment">
-            📞 Book a Session
-          </a>
+          <button type="button" class="btn-primary" aria-label="Book an appointment" onclick="Booking.open()">
+            🐾 Book a Session
+          </button>
           <a href="#services" class="btn-secondary" aria-label="View our services">
             Our Services ↓
           </a>
@@ -907,9 +1059,12 @@
   <!-- CTA SECTION -->
   <section class="cta-section" aria-labelledby="cta-title">
     <h2 id="cta-title">Ready to Pamper<br>Your Pet? 🎀</h2>
-    <p>Call us or WhatsApp to book your appointment. Walk-ins welcome too — we're open every day, 10 AM to 7 PM.</p>
+    <p>Book online in seconds, or call/WhatsApp us. Walk-ins welcome too — we're open every day, 10 AM to 7 PM.</p>
     <div class="cta-buttons">
-      <a href="tel:+911234567890" class="btn-white" aria-label="Call +91 12345 67890">
+      <button type="button" class="btn-white" aria-label="Book an appointment online" onclick="Booking.open()">
+        🐾 Book Online
+      </button>
+      <a href="tel:+911234567890" class="btn-outline-white" aria-label="Call +91 12345 67890">
         📞 +91 12345 67890
       </a>
       <a href="https://wa.me/911234567890?text=Hi!%20I'd%20like%20to%20book%20a%20grooming%20session%20for%20my%20pet." class="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Message on WhatsApp">
@@ -983,7 +1138,301 @@
     </div>
   </footer>
 
+  <!-- BOOKING MODAL -->
+  <div class="booking-overlay" id="bookingOverlay" role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <div class="booking-modal">
+      <button class="bk-close" aria-label="Close booking" onclick="Booking.close()">&times;</button>
+      <div class="bk-header">
+        <h3 id="bk-title">Book an Appointment</h3>
+        <p id="bk-subtitle">Pamper your furry friend in just a few taps 🐾</p>
+        <div class="bk-steps" id="bk-steps" aria-hidden="true">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="bk-body">
+
+        <!-- STEP 1: service + pet -->
+        <div class="bk-step active" data-step="1">
+          <label class="bk-label">Which service?</label>
+          <div class="bk-options" id="bk-services"></div>
+          <div class="bk-field" style="margin-top:18px;">
+            <label class="bk-label">Pet type</label>
+            <div class="bk-options cols-2" id="bk-pettype">
+              <button type="button" class="bk-option center" data-pet="Dog"><span class="ic">🐕</span> Dog</button>
+              <button type="button" class="bk-option center" data-pet="Cat"><span class="ic">🐈</span> Cat</button>
+            </div>
+          </div>
+          <div class="bk-field">
+            <label class="bk-label" for="bk-petname">Pet's name</label>
+            <input class="bk-input" id="bk-petname" type="text" placeholder="e.g. Bruno" maxlength="40" autocomplete="off" />
+          </div>
+          <div class="bk-err" id="bk-err1"></div>
+          <div class="bk-actions">
+            <button class="bk-btn bk-btn-primary" onclick="Booking.next(1)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: date + time -->
+        <div class="bk-step" data-step="2">
+          <div class="bk-field">
+            <label class="bk-label" for="bk-date">Pick a date</label>
+            <input class="bk-input" id="bk-date" type="date" onchange="Booking.renderSlots()" />
+          </div>
+          <label class="bk-label">Available time slots</label>
+          <p class="bk-hint">Open every day · 10 AM – 7 PM</p>
+          <div class="bk-slots" id="bk-slots"></div>
+          <div class="bk-err" id="bk-err2"></div>
+          <div class="bk-actions">
+            <button class="bk-btn bk-btn-ghost" onclick="Booking.go(1)">← Back</button>
+            <button class="bk-btn bk-btn-primary" onclick="Booking.next(2)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: contact + confirm -->
+        <div class="bk-step" data-step="3">
+          <div class="bk-summary" id="bk-summary"></div>
+          <div class="bk-field">
+            <label class="bk-label" for="bk-name">Your name</label>
+            <input class="bk-input" id="bk-name" type="text" placeholder="e.g. Ramesh K." maxlength="60" autocomplete="name" />
+          </div>
+          <div class="bk-field">
+            <label class="bk-label" for="bk-phone">Phone number</label>
+            <input class="bk-input" id="bk-phone" type="tel" placeholder="10-digit mobile number" maxlength="15" autocomplete="tel" inputmode="numeric" />
+          </div>
+          <div class="bk-field">
+            <label class="bk-label" for="bk-notes">Notes <span style="color:var(--mid);font-weight:500;">(optional)</span></label>
+            <textarea class="bk-textarea" id="bk-notes" placeholder="Anything we should know? Breed, temperament, special requests…" maxlength="300"></textarea>
+          </div>
+          <div class="bk-err" id="bk-err3"></div>
+          <div class="bk-actions">
+            <button class="bk-btn bk-btn-ghost" onclick="Booking.go(2)">← Back</button>
+            <button class="bk-btn bk-btn-primary" id="bk-confirm-btn" onclick="Booking.confirm()">Confirm Booking 🎀</button>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="bk-step" data-step="4">
+          <div class="bk-success">
+            <div class="check">✓</div>
+            <h3>You're all set!</h3>
+            <p id="bk-success-text">We've got your appointment booked.</p>
+            <div class="bk-ref" id="bk-ref"></div>
+            <div class="bk-actions" style="margin-top:0;">
+              <button class="bk-btn bk-btn-primary" onclick="Booking.close()">Done</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script>
+    /* ── BOOKING (demo — stores appointments in browser localStorage) ──── */
+    const Booking = (() => {
+      const STORE_KEY = 'cd_bookings';
+      const OPEN_HOUR = 10, CLOSE_HOUR = 19; // 10 AM – 7 PM, last start 18:00
+      const SERVICES = [
+        { id: 'dog-grooming', icon: '🐕', name: 'Dog Grooming' },
+        { id: 'cat-grooming', icon: '🐈', name: 'Cat Grooming' },
+        { id: 'dog-training', icon: '🏅', name: 'Dog Training' },
+        { id: 'tick-flea', icon: '🦟', name: 'Tick & Flea Treatment' },
+        { id: 'medication-bath', icon: '💊', name: 'Medication Bath' },
+        { id: 'home-visit', icon: '🏠', name: 'Home Grooming Visit' },
+      ];
+      const state = { step: 1, service: null, petType: null, date: '', time: '' };
+
+      function getBookings() {
+        try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+        catch { return []; }
+      }
+      function saveBooking(b) {
+        const all = getBookings(); all.push(b);
+        localStorage.setItem(STORE_KEY, JSON.stringify(all));
+      }
+      function takenSlots(date) {
+        return getBookings().filter(b => b.date === date).map(b => b.time);
+      }
+      function fmtTime(h) {
+        const am = h < 12, hr = h % 12 === 0 ? 12 : h % 12;
+        return `${hr}:00 ${am ? 'AM' : 'PM'}`;
+      }
+      // Local YYYY-MM-DD (avoids the UTC off-by-one from toISOString in IST)
+      function localISO(d) {
+        return d.getFullYear() + '-' +
+          String(d.getMonth() + 1).padStart(2, '0') + '-' +
+          String(d.getDate()).padStart(2, '0');
+      }
+      function fmtDate(iso) {
+        if (!iso) return '';
+        const d = new Date(iso + 'T00:00:00');
+        return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+      }
+
+      function open() {
+        renderServices();
+        const dateEl = document.getElementById('bk-date');
+        const today = new Date();
+        dateEl.min = localISO(today);
+        dateEl.max = localISO(new Date(today.getTime() + 60 * 86400000));
+        go(1);
+        document.getElementById('bookingOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        document.getElementById('bookingOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+        reset();
+      }
+      function reset() {
+        Object.assign(state, { step: 1, service: null, petType: null, date: '', time: '' });
+        ['bk-petname', 'bk-name', 'bk-phone', 'bk-notes', 'bk-date'].forEach(id => {
+          const el = document.getElementById(id); if (el) el.value = '';
+        });
+        ['bk-err1', 'bk-err2', 'bk-err3'].forEach(id => document.getElementById(id).textContent = '');
+        document.querySelectorAll('#bk-pettype .bk-option').forEach(o => o.classList.remove('selected'));
+        document.getElementById('bk-slots').innerHTML = '';
+      }
+
+      function renderServices() {
+        const wrap = document.getElementById('bk-services');
+        wrap.innerHTML = '';
+        SERVICES.forEach(s => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'bk-option' + (state.service?.id === s.id ? ' selected' : '');
+          b.innerHTML = `<span class="ic">${s.icon}</span> ${s.name}`;
+          b.onclick = () => {
+            state.service = s;
+            wrap.querySelectorAll('.bk-option').forEach(o => o.classList.remove('selected'));
+            b.classList.add('selected');
+          };
+          wrap.appendChild(b);
+        });
+        document.querySelectorAll('#bk-pettype .bk-option').forEach(o => {
+          o.onclick = () => {
+            state.petType = o.dataset.pet;
+            document.querySelectorAll('#bk-pettype .bk-option').forEach(x => x.classList.remove('selected'));
+            o.classList.add('selected');
+          };
+        });
+      }
+
+      function renderSlots() {
+        const date = document.getElementById('bk-date').value;
+        state.date = date; state.time = '';
+        const wrap = document.getElementById('bk-slots');
+        wrap.innerHTML = '';
+        if (!date) { wrap.innerHTML = '<div class="bk-slots-empty">Choose a date to see available times.</div>'; return; }
+        const taken = takenSlots(date);
+        const now = new Date();
+        const isToday = date === localISO(now);
+        let any = false;
+        for (let h = OPEN_HOUR; h < CLOSE_HOUR; h++) {
+          const label = fmtTime(h);
+          const key = String(h).padStart(2, '0') + ':00';
+          const isPast = isToday && h <= now.getHours();
+          const isTaken = taken.includes(key) || isPast;
+          const slot = document.createElement('div');
+          slot.className = 'bk-slot' + (isTaken ? ' taken' : '');
+          slot.textContent = label;
+          if (!isTaken) {
+            any = true;
+            slot.onclick = () => {
+              state.time = key;
+              wrap.querySelectorAll('.bk-slot').forEach(s => s.classList.remove('selected'));
+              slot.classList.add('selected');
+            };
+          }
+          wrap.appendChild(slot);
+        }
+        if (!any) wrap.innerHTML = '<div class="bk-slots-empty">No slots left for this day — please pick another date.</div>';
+      }
+
+      function go(step) {
+        state.step = step;
+        document.querySelectorAll('.bk-step').forEach(el => {
+          el.classList.toggle('active', Number(el.dataset.step) === step);
+        });
+        const dots = document.querySelectorAll('#bk-steps .dot');
+        dots.forEach((d, i) => d.classList.toggle('active', i < Math.min(step, 3)));
+        document.getElementById('bk-steps').style.visibility = step >= 4 ? 'hidden' : 'visible';
+        document.querySelector('.bk-body').scrollTop = 0;
+      }
+
+      function next(from) {
+        if (from === 1) {
+          const petname = document.getElementById('bk-petname').value.trim();
+          const err = document.getElementById('bk-err1');
+          if (!state.service) { err.textContent = 'Please pick a service.'; return; }
+          if (!state.petType) { err.textContent = 'Please choose Dog or Cat.'; return; }
+          if (!petname) { err.textContent = "Please enter your pet's name."; return; }
+          err.textContent = '';
+          go(2); renderSlots();
+        } else if (from === 2) {
+          const err = document.getElementById('bk-err2');
+          if (!state.date) { err.textContent = 'Please pick a date.'; return; }
+          if (!state.time) { err.textContent = 'Please select a time slot.'; return; }
+          err.textContent = '';
+          buildSummary();
+          go(3);
+        }
+      }
+
+      function buildSummary() {
+        const petname = document.getElementById('bk-petname').value.trim();
+        document.getElementById('bk-summary').innerHTML = `
+          <div class="bk-summary-row"><span class="k">Service</span><span class="v">${state.service.name}</span></div>
+          <div class="bk-summary-row"><span class="k">Pet</span><span class="v">${petname} (${state.petType})</span></div>
+          <div class="bk-summary-row"><span class="k">Date</span><span class="v">${fmtDate(state.date)}</span></div>
+          <div class="bk-summary-row"><span class="k">Time</span><span class="v">${fmtTime(parseInt(state.time))}</span></div>`;
+      }
+
+      function confirm() {
+        const name = document.getElementById('bk-name').value.trim();
+        const phoneRaw = document.getElementById('bk-phone').value.trim();
+        const phone = phoneRaw.replace(/\D/g, '');
+        const notes = document.getElementById('bk-notes').value.trim();
+        const err = document.getElementById('bk-err3');
+        if (!name) { err.textContent = 'Please enter your name.'; return; }
+        if (!/^\d{10}$/.test(phone)) { err.textContent = 'Please enter a valid 10-digit phone number.'; return; }
+        err.textContent = '';
+
+        // Guard against the slot being taken since the user picked it
+        if (takenSlots(state.date).includes(state.time)) {
+          err.textContent = 'Sorry, that slot was just taken. Please pick another time.';
+          go(2); renderSlots(); return;
+        }
+
+        const ref = 'CD-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+        const petname = document.getElementById('bk-petname').value.trim();
+        saveBooking({
+          ref, service: state.service.name, serviceId: state.service.id,
+          petType: state.petType, petName: petname,
+          date: state.date, time: state.time,
+          name, phone, notes, createdAt: new Date().toISOString(),
+        });
+
+        document.getElementById('bk-ref').textContent = 'Booking Ref: ' + ref;
+        document.getElementById('bk-success-text').innerHTML =
+          `<strong>${state.service.name}</strong> for <strong>${petname}</strong><br>` +
+          `${fmtDate(state.date)} at ${fmtTime(parseInt(state.time))}.<br>` +
+          `We'll call you at ${phone} to confirm.`;
+        go(4);
+      }
+
+      function openModal() { open(); }
+      return { open: openModal, close, go, next, renderSlots, confirm };
+    })();
+
+    // Close on overlay backdrop click + Escape
+    document.getElementById('bookingOverlay').addEventListener('click', e => {
+      if (e.target.id === 'bookingOverlay') Booking.close();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('bookingOverlay').classList.contains('open')) Booking.close();
+    });
+
     function toggleMenu(btn) {
       const menu = document.getElementById('mobileMenu');
       const open = menu.classList.toggle('open');
